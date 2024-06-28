@@ -27,11 +27,19 @@ router.post('/account', (req, res) => {
   //写入文件
   //使用shift往上边叠加，之后查找数据库的时候从上往下找会更快
   db.get('accounts').unshift({id:id, ...req.body}).write();
-  res.render('success', {msg: ':) 添加成功', url: '/account/list'});
+  res.render('success', {msg: ':) 添加成功', url: '/account'});
 })
 
 router.get('/account/create', function(req, res, next) {
   res.render('create');
 });
+
+router.get('/account/:id', (req, res) => {
+  //get param id
+  let id = req.params.id;
+  //delete
+  db.get('accounts').remove({id:id}).write();
+  res.render('success', {msg: ':) 删除成功', url: '/account'});
+})
 
 module.exports = router;

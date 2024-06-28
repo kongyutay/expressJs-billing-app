@@ -21,21 +21,14 @@
                             <span class="text-sm text-gray-700"><%= item.account %> 元</span>
                         </div>
                         <div class="mt-2 text-gray-700">
-                            抽烟只抽寂寞门，一生只爱一个人
+                            <%= item.remarks %>
                         </div>
+                        <a href="/account/<%= item.id %>">
+                            <span class="remove">remove</span>
+                        </a>
                     </div>
 
                 <% }) %>
-                <div class="bg-green-100 p-4 rounded">
-                    <div class="flex justify-between">
-                        <span class="text-sm text-gray-500">2023-04-15</span>
-                        <span class="bg-green-500 text-white text-sm px-2 py-1 rounded">收入</span>
-                        <span class="text-sm text-gray-700">4396 元</span>
-                    </div>
-                    <div class="mt-2 text-gray-700">
-                        3 月份发工资
-                    </div>
-                </div>
             </div>
         </div>
     </div>
