@@ -25,7 +25,7 @@ router.post('/account', (req, res) => {
   //写入文件
   //使用shift往上边叠加，之后查找数据库的时候从上往下找会更快
   db.get('accounts').shift({id:id, ...req.body}).write();
-  res.send('添加记录')
+  res.render('success', {msg: ':) 添加成功', url: '/account/list'});
 })
 
 router.get('/account/create', function(req, res, next) {
