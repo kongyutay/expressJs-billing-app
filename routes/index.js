@@ -10,6 +10,8 @@ const db = low(adapter)
 
 //导入shortid
 const shortid = require('shortid');
+const moment = require('moment');
+const AccountModel = require('../models/AccountModel');
 
 /* 记帐本列表 */
 router.get('/account', function(req, res, next) {
@@ -19,15 +21,18 @@ router.get('/account', function(req, res, next) {
 });
 
 router.post('/account', (req, res) => {
-  //因为app.js已经给了app.use(express.json())和app.use(express.urlencoded({extended:false}))的中间件调用，所以已经直接可以用req.body
-  console.log(req.body);
-
-  //generate id
-  let id = shortid.generate();
-  //写入文件
-  //使用shift往上边叠加，之后查找数据库的时候从上往下找会更快
-  db.get('accounts').unshift({id:id, ...req.body}).write();
-  res.render('success', {msg: ':) 添加成功', url: '/account'});
+  //要把字符串变成日期
+  //插入数据库
+  AccountModel.create({
+    ...req.body,
+    time: moment(req.body.time).toDate()
+  },(err, data) => {
+    if(err){
+      res.status(500).send('插入失败')
+      return
+    }
+    res.render('success', {msg: ':) 添加成功', url: '/account'});
+  })
 })
 
 router.get('/account/create', function(req, res, next) {
