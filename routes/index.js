@@ -49,8 +49,13 @@ router.get('/account/:id', (req, res) => {
   //get param id
   let id = req.params.id;
   //delete
-  db.get('accounts').remove({id:id}).write();
-  res.render('success', {msg: ':) 删除成功', url: '/account'});
+  AccountModel.deleteOne({_id:id}, (err, data) => {
+    if(err) {
+      res.status(500).send('删除失败')
+      return
+    }
+    res.render('success', {msg: ':) 删除成功', url: '/account'});
+  })
 })
 
 module.exports = router;
