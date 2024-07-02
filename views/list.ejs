@@ -15,9 +15,9 @@
                 <% accounts.forEach(item => {  %>
                     <div class="bg-red-100 p-4 rounded">
                         <div class="flex justify-between">
-                            <span class="text-sm text-gray-500"><%= item.time %></span>
+                            <span class="text-sm text-gray-500"><%= moment(item.time).format('YYYY-MM-DD') %></span>
                             <%= item.title %>
-                            <span class="<%= item.type==='-1' ? 'bg-yellow-400' : 'bg-green-500' %> text-white text-sm px-2 py-1 rounded"><%= item.type==='-1' ? '支出' : '收入' %></span>
+                            <span class="<%= item.type===-1 ? 'bg-yellow-400' : 'bg-green-500' %> text-white text-sm px-2 py-1 rounded"><%= item.type===-1 ? '支出' : '收入' %></span>
                             <span class="text-sm text-gray-700"><%= item.account %> 元</span>
                         </div>
                         <div class="mt-2 text-gray-700">

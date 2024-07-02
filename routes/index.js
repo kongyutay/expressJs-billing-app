@@ -16,8 +16,14 @@ const AccountModel = require('../models/AccountModel');
 /* 记帐本列表 */
 router.get('/account', function(req, res, next) {
   //先获取所有的账单信息
-  let accounts = db.get('accounts').value();
-  res.render('list', {accounts: accounts});
+  //let accounts = db.get('accounts').value();
+  AccountModel.find().sort({time: -1}).exec((err, data) => {
+    if(err){
+      res.status(500).send('读取失败')
+      return
+    }
+    res.render('list', {accounts: data, moment:moment});
+  })
 });
 
 router.post('/account', (req, res) => {
