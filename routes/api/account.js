@@ -1,15 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-//导入 lowdb 让它可以记录和读取数据
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
- 
-const adapter = new FileSync(__dirname + '/../data/db.json')
-const db = low(adapter)
-
-//导入shortid
-const shortid = require('shortid');
 const moment = require('moment');
 const AccountModel = require('../models/AccountModel');
 
