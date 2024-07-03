@@ -53,16 +53,24 @@ router.post('/account', (req, res) => {
   })
 })
 
-router.get('/account/:id', (req, res) => {
+router.delete('/account/:id', (req, res) => {
   //get param id
   let id = req.params.id;
   //delete
   AccountModel.deleteOne({_id:id}, (err, data) => {
     if(err) {
-      res.status(500).send('删除失败')
+      res.json({
+        code: '1003',
+        msg: '删除账单失败',
+        data: null
+      })
       return
     }
-    res.render('success', {msg: ':) 删除成功', url: '/account'});
+    res.json({
+        code: '0000',
+        msg: '删除成功',
+        data: {}
+    })
   })
 })
 
