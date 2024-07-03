@@ -10,10 +10,21 @@ router.get('/account', function(req, res, next) {
   //let accounts = db.get('accounts').value();
   AccountModel.find().sort({time: -1}).exec((err, data) => {
     if(err){
-      res.status(500).send('读取失败')
+        //通常返回结果的时候，状态信息已经表示在code里面，没必要再加状态码，否则前端不好处理
+      res.json({
+        code: '1001',
+        msg: '读取失败',
+        data: null
+      })
       return
     }
-    res.render('list', {accounts: data, moment:moment});
+
+    //一般上返回三个属性，code，msg和data
+    res.json({
+        code: '0000',   //可以写成20000，0000等等
+        msg: '读取成功',
+        data: data
+    })
   })
 });
 
