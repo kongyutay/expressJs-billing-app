@@ -93,4 +93,38 @@ router.get('/account/:id', (req,res) => {
     })
 })
 
+//更新账单信息
+router.patch('/account/:id', (req, res) => {
+    let { id } = req.params;
+
+    //updateOne接受三个参数，第一个是查询，第二个是更改的内容，会放在请求体的body里面所以要取出来，第三个要回调处理
+    AccountModel.updateOne({_id:id}, req.body, (err, data) => {
+        if(err) {
+            return res.json({
+                code: '1005',
+                msg: '更新失败',
+                data: null
+            })
+        }
+
+        AccountModel.findById(id, (err, data) => {
+            if(err) {
+                return res.json({
+                    code: '1004',
+                    msg: '读取失败',
+                    data: null
+                })
+            }
+            res.json({
+                code: '0000',
+                msg: '更新成功',
+                data: data  //如果没有上面的代码，返回结果和预期的不一样，所以要再次查询数据库获得数据
+            })
+        })
+        
+    })
+})
+
+//已经形成回调地狱，之后要使用promise的方式优化
+
 module.exports = router;
