@@ -29,6 +29,8 @@ router.get('/account', function(req, res, next) {
 });
 
 router.post('/account', (req, res) => {
+    //可以再这里做数据验证或表单验证，不同的问题返回不同的error code
+    
   //要把字符串变成日期
   //插入数据库
   AccountModel.create({
@@ -36,16 +38,20 @@ router.post('/account', (req, res) => {
     time: moment(req.body.time).toDate()
   },(err, data) => {
     if(err){
-      res.status(500).send('插入失败')
+      res.json({
+        code: '1002',
+        msg: '创建失败',
+        data: null
+      })
       return
     }
-    res.render('success', {msg: ':) 添加成功', url: '/account'});
+    res.json({
+        code: '0000',
+        msg: '创建成功',
+        data: data
+    })
   })
 })
-
-router.get('/account/create', function(req, res, next) {
-  res.render('create');
-});
 
 router.get('/account/:id', (req, res) => {
   //get param id
