@@ -3,9 +3,10 @@ var router = express.Router();
 
 const moment = require('moment');
 const AccountModel = require('../models/AccountModel');
+const checkLoginMiddleware = require('../../middlewares/checkLoginMiddleware')
 
 /* 记帐本列表 */
-router.get('/account', function(req, res, next) {
+router.get('/account', checkLoginMiddleware, function(req, res, next) {
   //先获取所有的账单信息
   //let accounts = db.get('accounts').value();
   AccountModel.find().sort({time: -1}).exec((err, data) => {
@@ -17,7 +18,7 @@ router.get('/account', function(req, res, next) {
   })
 });
 
-router.post('/account', (req, res) => {
+router.post('/account', checkLoginMiddleware, (req, res) => {
   //要把字符串变成日期
   //插入数据库
   AccountModel.create({
@@ -32,11 +33,11 @@ router.post('/account', (req, res) => {
   })
 })
 
-router.get('/account/create', function(req, res, next) {
+router.get('/account/create', checkLoginMiddleware, function(req, res, next) {
   res.render('create');
 });
 
-router.get('/account/:id', (req, res) => {
+router.get('/account/:id', checkLoginMiddleware, (req, res) => {
   //get param id
   let id = req.params.id;
   //delete
