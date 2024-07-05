@@ -11,9 +11,32 @@ router.post('/reg', (req, res) => {
     UserModel.create({...req.body, password: md5(req.body.password)}, (err, data) => {
         if(err) {
             res.status(500).send('注册失败')
+            return
         }
         res.render('success', {msg:'注册成功', url: '/login'});
     })
+})
+
+router.get('/login', (req, res) => {
+    res.render('auth/login')
+})
+
+router.post('/login', (req, res) => {
+    //查询数据库，看有没有匹配
+    let {username, password} = req.body
+    UserModel.findOne({username: username, password: md5(password)}, (err, data) => {
+        //判断
+        if(err) {
+            res.status(500).send('登陆失败')
+            return
+        }
+        if(!data) {
+            res.send('账号或密码错误')
+        }
+        //登录成功
+        res.render('success', {msg: '登陆成功', url: '/account'})
+    })
+
 })
 
 module.exports = router;
