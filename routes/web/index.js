@@ -5,6 +5,10 @@ const moment = require('moment');
 const AccountModel = require('../models/AccountModel');
 const checkLoginMiddleware = require('../../middlewares/checkLoginMiddleware')
 
+router.get('/', (req, res) => {
+  res.redirect('/account');
+})
+
 /* 记帐本列表 */
 router.get('/account', checkLoginMiddleware, function(req, res, next) {
   //先获取所有的账单信息
