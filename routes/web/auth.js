@@ -33,6 +33,10 @@ router.post('/login', (req, res) => {
         if(!data) {
             res.send('账号或密码错误')
         }
+        //写入session
+        req.session.username = data.username;
+        req.session._id = data._id;             //这是用户文档的id，不是sessionid
+
         //登录成功
         res.render('success', {msg: '登陆成功', url: '/account'})
     })

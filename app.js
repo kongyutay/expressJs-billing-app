@@ -7,7 +7,23 @@ var logger = require('morgan');
 var indexRouter = require('./routes/web/index');
 const authRouter = require('./routes/web/auth');
 const accountRouter = require('./routes/api/account');
+const session = require('express-session')
+const MongoStore = require('connect-mongo')
+const { DBHOST, DBPORT, DBNAME } = requrie('./config/config')
 var app = express();
+app.use(session({
+  name: 'sid',
+  secret: 'atguigu',
+  saveUninitialized: false,
+  resave: true,
+  store: MongoStore.create({
+    mongoUrl: `mongodb://${DBHOST}:${DBPORT}/${DBNAME}`
+  }),
+  cookie: {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 7
+  }
+}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
