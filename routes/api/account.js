@@ -1,34 +1,40 @@
 var express = require('express');
 var router = express.Router();
+const jwt = require('jsonwebtoken')
 
 const moment = require('moment');
 const AccountModel = require('../models/AccountModel');
+const checkTokenMiddleware = require('../../middlewares/checkTokenMiddleware')
+
 
 /* 记帐本列表 */
-router.get('/account', function(req, res, next) {
-  //先获取所有的账单信息
-  //let accounts = db.get('accounts').value();
-  AccountModel.find().sort({time: -1}).exec((err, data) => {
-    if(err){
-        //通常返回结果的时候，状态信息已经表示在code里面，没必要再加状态码，否则前端不好处理
-      res.json({
-        code: '1001',
-        msg: '读取失败',
-        data: null
-      })
-      return
-    }
+router.get('/account', checkTokenMiddleware, function(req, res, next) {
+  
+  
+    //先获取所有的账单信息
+    //let accounts = db.get('accounts').value();
+    AccountModel.find().sort({time: -1}).exec((err, data) => {
+      if(err){
+          //通常返回结果的时候，状态信息已经表示在code里面，没必要再加状态码，否则前端不好处理
+        res.json({
+          code: '1001',
+          msg: '读取失败',
+          data: null
+        })
+        return
+      }
 
-    //一般上返回三个属性，code，msg和data
-    res.json({
-        code: '0000',   //可以写成20000，0000等等
-        msg: '读取成功',
-        data: data
+      //一般上返回三个属性，code，msg和data
+      res.json({
+          code: '0000',   //可以写成20000，0000等等
+          msg: '读取成功',
+          data: data
+      })
     })
-  })
+  
 });
 
-router.post('/account', (req, res) => {
+router.post('/account', checkTokenMiddleware, (req, res) => {
     //可以再这里做数据验证或表单验证，不同的问题返回不同的error code
     
   //要把字符串变成日期
@@ -53,7 +59,7 @@ router.post('/account', (req, res) => {
   })
 })
 
-router.delete('/account/:id', (req, res) => {
+router.delete('/account/:id', checkTokenMiddleware, (req, res) => {
   //get param id
   let id = req.params.id;
   //delete
@@ -75,7 +81,7 @@ router.delete('/account/:id', (req, res) => {
 })
 
 //获取单个账单信息
-router.get('/account/:id', (req,res) => {
+router.get('/account/:id', checkTokenMiddleware, (req,res) => {
     let {id} = res.params;
     AccountModel.findById(id, (err, data) => {
         if(err) {
@@ -94,7 +100,7 @@ router.get('/account/:id', (req,res) => {
 })
 
 //更新账单信息
-router.patch('/account/:id', (req, res) => {
+router.patch('/account/:id', checkTokenMiddleware, (req, res) => {
     let { id } = req.params;
 
     //updateOne接受三个参数，第一个是查询，第二个是更改的内容，会放在请求体的body里面所以要取出来，第三个要回调处理

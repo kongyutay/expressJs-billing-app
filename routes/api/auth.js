@@ -20,11 +20,12 @@ router.post('/login', (req, res) => {
             return
         }
         if(!data) {
-            res.json({
+            return res.json({
                 code: '2002',
                 msg: '用户名或密码错误',
                 data: null
             })
+            //一定要加return，否则会继续执行，导致响应报文两个end
         }
 
         let token = jwt.sign({
